@@ -19,38 +19,20 @@
 </head>
 
 <body style="margin:0 10%">
+    <div id="app">
         <div class="page-header">
                 <h1>满屋花 <small>一花一世界</small></h1>
               </div>
     <div class="row">
         <div class="col-sm-12">
         <ul class="nav nav-pills nav-justified">
-            <li role="presentation" class="active">
-                <a href="#">鲜花礼品</a>
-            </li>
-            <li role="presentation">
-                <a href="#">自助订花</a>
-            </li>
-            <li role="presentation">
-                <a href="#">绿色植物</a>
-            </li>
-            <li role="presentation">
-                <a href="#">花之物语</a>
-            </li>
-            <li role="presentation">
-                <a href="#">会员中心</a>
-            </li>
-            <li role="presentation">
-                <a href="#">联系我们</a>
-            </li>
-            <li role="presentation">
-                <a href="#">支付我们</a>
-            </li>
+            <li role="presentation" class="active"><a href="#">鲜花礼品</a></li>
+            <li role="presentation" v-for="navitem in navitems"><a href="#">{{navitem}}</a></li>
         </ul>
         </div>        
     </div>
     <br>
-    <div id="app" class="row">
+    <div class="row">
         <div class="col-sm-3">
             <img class="img-responsive" src="images/login.jpg" />
             <form action="">
@@ -69,26 +51,15 @@
         <img class="img-responsive" src="images/category.jpg" />
             <div class="list-group">
                 <a href="#" class="list-group-item active">用途</a>
-                <a href="#" class="list-group-item">爱情鲜花</a>
-                <a href="#" class="list-group-item">生日送花</a>
-                <a href="#" class="list-group-item">新年鲜花</a>
-                <a href="#" class="list-group-item">家庭用花</a>
-                <a href="#" class="list-group-item">亲情用花</a>
-                <a href="#" class="list-group-item">道歉鲜花</a>
-                <a href="#" class="list-group-item">开业花篮</a>
-                <a href="#" class="list-group-item">会议用花</a>
+                <a href="#" v-for="floweruse in floweruses" class="list-group-item">{{floweruse}}</a>
             </div>
             <div class="list-group">
                 <a href="#" class="list-group-item active">花材</a>
-                <a href="#" v-for="item in flowers" class="list-group-item">{{item}}</a>
+                <a href="#" v-for="flower in flowers" class="list-group-item">{{flower}}</a>
             </div>
             <div class="list-group">
                 <a href="#" class="list-group-item active">价格</a>
-                <a href="#" class="list-group-item">100~200</a>
-                <a href="#" class="list-group-item">200~300</a>
-                <a href="#" class="list-group-item">300~400</a>
-                <a href="#" class="list-group-item">400~500</a>
-                <a href="#" class="list-group-item">500~600</a>
+                <a href="#" v-for="pricerange in priceranges" class="list-group-item">{{pricerange}}</a>
             </div>
         </div>
         <div class="col-sm-9">
@@ -103,17 +74,17 @@
                             <th>数量</th>
                             <th>删除商品</th>
                         </tr>
-                        <tr v-for="good in goods">
+                        <tr v-for="good in goods" v-if="!good.isdelete">
                             <td>{{good.code}}</td>
                             <td>{{good.name}}</td>
                             <td>￥{{good.price}}</td>
                             <td>￥{{discountprice(good.price)}}</td>
                             <td>
-                                <input type="text" class="form-control" :value="good.count" style="width:50px">
+                                <input type="text" class="form-control" v-model="good.count" style="width:50px">
                                 
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger">删除</button>
+                                <button type="button" @click="deletegood(good)" class="btn btn-danger">删除</button>
                             </td>
                         </tr>
                     </table>
@@ -133,6 +104,7 @@
 
         </div>
     </div>
+</div>
 
     <script>
         var app = new Vue({
@@ -142,17 +114,20 @@
                     code: 9010754,
                     name: '[鲜花]陪伴在你身边',
                     price: 220,
-                    count: 1
+                    count: 1,
+                    isdelete:false
                 },
                 {
                     code: 9010818,
                     name: '[鲜花]蓝色之恋',
                     price: 155,
-                    count: 2
+                    count: 2,
+                    isdelete:false
                 }],
-                flowers:[
-                    '玫瑰','百合','郁金香','太阳花','康乃馨','马蹄莲','扶郎','剑兰'
-                ]
+                flowers:['玫瑰','百合','郁金香','太阳花','康乃馨','马蹄莲','扶郎','剑兰'],
+                navitems:['自助订花','绿色植物','花之物语','会员中心','联系我们','支付我们'],
+                floweruses:['爱情鲜花','生日送花','新年鲜花','家庭用花','亲情用花','道歉鲜花','开业花篮','会议用花'],
+                priceranges:['100~200','200~300','300~400','400~500','500~600']
             },
             methods: {
                 discountprice: function (price) {
@@ -161,9 +136,14 @@
                 totalprice:function(){
                     let total=0;
                     for(let i=0;i<this.goods.length;i++){
+                        if(this.goods[i].isdelete===false){
                         total+=this.goods[i].price*0.9*this.goods[i].count;
+                        }
                     }
                     return total;
+                },
+                deletegood:function(good){
+                    return good.isdelete=true;
                 }
             }
         });
