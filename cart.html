@@ -50,7 +50,7 @@
         </div>        
     </div>
     <br>
-    <div class="row">
+    <div id="app" class="row">
         <div class="col-sm-3">
             <img class="img-responsive" src="images/login.jpg" />
             <form action="">
@@ -80,14 +80,7 @@
             </div>
             <div class="list-group">
                 <a href="#" class="list-group-item active">花材</a>
-                <a href="#" class="list-group-item">玫瑰</a>
-                <a href="#" class="list-group-item">百合</a>
-                <a href="#" class="list-group-item">郁金香</a>
-                <a href="#" class="list-group-item">太阳花</a>
-                <a href="#" class="list-group-item">康乃馨</a>
-                <a href="#" class="list-group-item">马蹄莲</a>
-                <a href="#" class="list-group-item">扶郎</a>
-                <a href="#" class="list-group-item">剑兰</a>
+                <a href="#" v-for="item in flowers" class="list-group-item">{{item}}</a>
             </div>
             <div class="list-group">
                 <a href="#" class="list-group-item active">价格</a>
@@ -100,7 +93,7 @@
         </div>
         <div class="col-sm-9">
             <div class="row">
-                <div id="app" class="col-sm-12">
+                <div class="col-sm-12">
                     <table class="table">
                         <tr style="width:100%">
                             <th>编号</th>
@@ -156,7 +149,10 @@
                     name: '[鲜花]蓝色之恋',
                     price: 155,
                     count: 2
-                }]
+                }],
+                flowers:[
+                    '玫瑰','百合','郁金香','太阳花','康乃馨','马蹄莲','扶郎','剑兰'
+                ]
             },
             methods: {
                 discountprice: function (price) {
